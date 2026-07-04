@@ -7,8 +7,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-
-    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -69,7 +67,7 @@ kotlin {
             implementation(libs.bundles.koin.common)
 
             implementation(libs.bundles.ktor.common)
-            implementation(libs.bundles.room.common)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -88,12 +86,7 @@ kotlin {
         }
     }
 }
-// =============================================================================
-// Room Database — Schema Export Configuration
-// =============================================================================
-room {
-    schemaDirectory("$projectDir/schemas")
-}
+
 
 
 
