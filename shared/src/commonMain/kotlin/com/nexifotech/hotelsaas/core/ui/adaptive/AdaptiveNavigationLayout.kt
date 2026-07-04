@@ -1,5 +1,6 @@
 package com.nexifotech.hotelsaas.core.ui.adaptive
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,9 +47,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nexifotech.hotelsaas.core.navigation.AppRoutes
+import com.nexifotech.hotelsaas.core.ui.theme.Navy10
+import com.nexifotech.hotelsaas.core.ui.theme.Navy30
+import com.nexifotech.hotelsaas.core.ui.theme.Navy90
+import com.nexifotech.hotelsaas.core.ui.theme.Neutral20
+import com.nexifotech.hotelsaas.core.ui.theme.Neutral90
 import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
-import com.nexifotech.hotelsaas.feature.dashboard.presentation.DashboardScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
 import com.nexifotech.hotelsaas.feature.FrontOfficeScreen
 import com.nexifotech.hotelsaas.feature.GuestManagementScreen
@@ -60,6 +65,7 @@ import com.nexifotech.hotelsaas.feature.RestaurantScreen
 import com.nexifotech.hotelsaas.feature.RoomManagementScreen
 import com.nexifotech.hotelsaas.feature.SettingsScreen
 import com.nexifotech.hotelsaas.feature.UserManagementScreen
+import com.nexifotech.hotelsaas.feature.dashboard.presentation.DashboardScreen
 import hotelsaas.shared.generated.resources.Res
 import hotelsaas.shared.generated.resources.billing
 import hotelsaas.shared.generated.resources.dashboard
@@ -158,6 +164,10 @@ private fun CompactLayout(
                 LazyColumn {
                     item {
                         allNavItems.forEach { item ->
+                            val isDark = isSystemInDarkTheme()
+                            val activeBg = if (isDark) Navy30 else Navy90
+                            val activeText = if (isDark) Navy90 else Navy10
+                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
@@ -169,11 +179,11 @@ private fun CompactLayout(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
                                 shape = CircleShape,
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    selectedContainerColor = activeBg,
+                                    selectedIconColor = activeText,
+                                    selectedTextColor = activeText,
+                                    unselectedIconColor = inactiveText,
+                                    unselectedTextColor = inactiveText
                                 )
                             )
                         }
@@ -227,17 +237,21 @@ private fun MediumLayout(
                     Spacer(Modifier.height(16.dp))
                     // Primary destinations at the top of the rail
                     primaryNavItems.forEach { item ->
+                        val isDark = isSystemInDarkTheme()
+                        val activeBg = if (isDark) Navy30 else Navy90
+                        val activeText = if (isDark) Navy90 else Navy10
+                        val inactiveText = if (isDark) Neutral90 else Neutral20
                         NavigationRailItem(
                             icon     = { NavIcon(item) },
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
                             colors = NavigationRailItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                selectedIconColor = activeText,
+                                selectedTextColor = activeText,
+                                indicatorColor = activeBg,
+                                unselectedIconColor = inactiveText,
+                                unselectedTextColor = inactiveText
                             )
                         )
                     }
@@ -245,17 +259,21 @@ private fun MediumLayout(
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
                     // Secondary destinations at the bottom of the rail
                     secondaryNavItems.forEach { item ->
+                        val isDark = isSystemInDarkTheme()
+                        val activeBg = if (isDark) Navy30 else Navy90
+                        val activeText = if (isDark) Navy90 else Navy10
+                        val inactiveText = if (isDark) Neutral90 else Neutral20
                         NavigationRailItem(
                             icon     = { NavIcon(item) },
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
                             colors = NavigationRailItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
-                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                selectedIconColor = activeText,
+                                selectedTextColor = activeText,
+                                indicatorColor = activeBg,
+                                unselectedIconColor = inactiveText,
+                                unselectedTextColor = inactiveText
                             )
                         )
                     }
@@ -287,6 +305,10 @@ private fun ExpandedLayout(
                     item {
                         SectionLabel("Operations")
                         primaryNavItems.forEach { item ->
+                            val isDark = isSystemInDarkTheme()
+                            val activeBg = if (isDark) Navy30 else Navy90
+                            val activeText = if (isDark) Navy90 else Navy10
+                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
@@ -295,11 +317,11 @@ private fun ExpandedLayout(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
                                 shape = CircleShape,
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    selectedContainerColor = activeBg,
+                                    selectedIconColor = activeText,
+                                    selectedTextColor = activeText,
+                                    unselectedIconColor = inactiveText,
+                                    unselectedTextColor = inactiveText
                                 )
                             )
                         }
@@ -308,6 +330,10 @@ private fun ExpandedLayout(
                         )
                         SectionLabel("Management")
                         secondaryNavItems.forEach { item ->
+                            val isDark = isSystemInDarkTheme()
+                            val activeBg = if (isDark) Navy30 else Navy90
+                            val activeText = if (isDark) Navy90 else Navy10
+                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
@@ -316,11 +342,11 @@ private fun ExpandedLayout(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
                                 shape = CircleShape,
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    selectedContainerColor = activeBg,
+                                    selectedIconColor = activeText,
+                                    selectedTextColor = activeText,
+                                    unselectedIconColor = inactiveText,
+                                    unselectedTextColor = inactiveText
                                 )
                             )
                         }

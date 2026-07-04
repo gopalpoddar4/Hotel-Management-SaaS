@@ -1,5 +1,7 @@
 package com.nexifotech.hotelsaas.feature.dashboard.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nexifotech.hotelsaas.core.ui.adaptive.WindowSizeClass
 import com.nexifotech.hotelsaas.core.ui.adaptive.rememberWindowSizeClass
+import com.nexifotech.hotelsaas.core.ui.theme.Neutral10
+import com.nexifotech.hotelsaas.core.ui.theme.Neutral90
+import com.nexifotech.hotelsaas.core.ui.theme.Neutral99
 import com.nexifotech.hotelsaas.feature.dashboard.presentation.components.QuickActions
 import com.nexifotech.hotelsaas.feature.dashboard.presentation.components.RecentBookingsTable
 import com.nexifotech.hotelsaas.feature.dashboard.presentation.components.RoomStatusGrid
@@ -53,9 +58,14 @@ private fun DashboardContent(
     uiState: DashboardUiState,
     windowSizeClass: WindowSizeClass
 ) {
+    val isDark = isSystemInDarkTheme()
+    val bgColor = if (isDark) Neutral10 else Neutral99
+    val textColor = if (isDark) Neutral90 else Neutral10
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .background(bgColor)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -63,6 +73,7 @@ private fun DashboardContent(
             Text(
                 text = "Dashboard",
                 style = MaterialTheme.typography.headlineMedium,
+                color = textColor,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         }
