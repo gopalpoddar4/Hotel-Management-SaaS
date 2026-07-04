@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -19,8 +20,10 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -45,7 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nexifotech.hotelsaas.core.navigation.AppRoutes
 import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
-import com.nexifotech.hotelsaas.feature.DashboardScreen
+import com.nexifotech.hotelsaas.feature.dashboard.presentation.DashboardScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
 import com.nexifotech.hotelsaas.feature.FrontOfficeScreen
 import com.nexifotech.hotelsaas.feature.GuestManagementScreen
@@ -163,7 +166,15 @@ private fun CompactLayout(
                                     coroutineScope.launch { drawerState.close() }
                                     navController.navigateToItem(item)
                                 },
-                                modifier = Modifier.padding(horizontal = 12.dp),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
+                                shape = CircleShape,
+                                colors = NavigationDrawerItemDefaults.colors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             )
                         }
                         Spacer(Modifier.height(8.dp))
@@ -221,6 +232,13 @@ private fun MediumLayout(
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
+                            colors = NavigationRailItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
                     }
                     Spacer(Modifier.weight(1f))
@@ -232,6 +250,13 @@ private fun MediumLayout(
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
+                            colors = NavigationRailItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         )
                     }
                     Spacer(Modifier.height(16.dp))
@@ -267,7 +292,15 @@ private fun ExpandedLayout(
                                 label    = { Text(item.label) },
                                 selected = currentDestination.isRouteSelected(item),
                                 onClick  = { navController.navigateToItem(item) },
-                                modifier = Modifier.padding(horizontal = 12.dp),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
+                                shape = CircleShape,
+                                colors = NavigationDrawerItemDefaults.colors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             )
                         }
                         HorizontalDivider(
@@ -280,7 +313,15 @@ private fun ExpandedLayout(
                                 label    = { Text(item.label) },
                                 selected = currentDestination.isRouteSelected(item),
                                 onClick  = { navController.navigateToItem(item) },
-                                modifier = Modifier.padding(horizontal = 12.dp),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
+                                shape = CircleShape,
+                                colors = NavigationDrawerItemDefaults.colors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             )
                         }
                     }
