@@ -13,6 +13,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.border
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountBox
@@ -29,6 +42,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +55,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.NavigationRail
@@ -67,7 +87,7 @@ import com.nexifotech.hotelsaas.core.navigation.AppRoutes
 import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
-import com.nexifotech.hotelsaas.feature.FrontOfficeScreen
+import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.FrontOfficeScreen
 import com.nexifotech.hotelsaas.feature.GuestManagementScreen
 import com.nexifotech.hotelsaas.feature.HouseKeepingScreen
 import com.nexifotech.hotelsaas.feature.PayrollScreen
@@ -92,6 +112,7 @@ import hotelsaas.shared.generated.resources.setting
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.ui.text.style.TextAlign
 
 // ─── Nav Item Model ───────────────────────────────────────────────────────────
 private data class NavItem(
@@ -211,22 +232,121 @@ private fun CompactLayout(
         },
     ) {
         Scaffold(
+            topBar = {
+                GlassTopAppBar(
+                    title = currentDestination.getCurrentTitle(allNavItems),
+                    onNavigationClick = {
+                        coroutineScope.launch { drawerState.open() }
+                    }
+                )
+            },
             bottomBar = {
-                NavigationBar {
+                val dividerColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    tonalElevation = 0.dp,
+                    modifier = Modifier.drawBehind {
+                        drawLine(
+                            color = dividerColor,
+                            start = Offset(0f, 0f),
+                            end = Offset(size.width, 0f),
+                            strokeWidth = 1.dp.toPx()
+                        )
+                    }
+                ) {
                     compactBottomNavItems.forEach { item ->
+                        val selected = currentDestination.isRouteSelected(item)
+                        val animatedBgColor by animateColorAsState(
+                            targetValue = if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            label = "bgColor"
+                        )
+                        val animatedIconColor by animateColorAsState(
+                            targetValue = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            label = "iconColor"
+                        )
+                        val animatedIconOffset by animateDpAsState(
+                            targetValue = if (selected) (-2).dp else 0.dp,
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            label = "iconOffset"
+                        )
+
                         NavigationBarItem(
-                            icon     = { NavIcon(item) },
-                            label    = { Text(item.label) },
-                            selected = currentDestination.isRouteSelected(item),
-                            onClick  = { navController.navigateToItem(item) },
+                            selected = selected,
+                            onClick = { navController.navigateToItem(item) },
+                            icon = {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(14.dp))
+                                        .background(animatedBgColor)
+                                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = item.emoji,
+                                        contentDescription = item.label,
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .offset(y = animatedIconOffset),
+                                        tint = animatedIconColor
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = item.label,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = animatedIconColor,
+                                        fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal,
+                                        maxLines = 2,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            },
+                            label = null,
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent,
+                                selectedIconColor = animatedIconColor,
+                                unselectedIconColor = animatedIconColor
+                            )
                         )
                     }
                     // "More" item opens the drawer to reveal all destinations
                     NavigationBarItem(
-                        icon     = { Text("⋯", fontSize = 16.sp) },
-                        label    = { Text("More") },
                         selected = false,
                         onClick  = { coroutineScope.launch { drawerState.open() } },
+                        icon = {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(14.dp))
+                                    .background(Color.Transparent)
+                                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "More",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = "More",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    fontWeight = FontWeight.Normal,
+                                    maxLines = 1,
+                                )
+                            }
+                        },
+                        label = null,
+                        colors = NavigationBarItemDefaults.colors(
+                            indicatorColor = Color.Transparent,
+                            selectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             },
@@ -296,10 +416,17 @@ private fun MediumLayout(
             }
 
         }
-        MainNavHost(
-            navController = navController,
-            modifier      = Modifier.weight(1f),
-        )
+        Column(modifier = Modifier.weight(1f)) {
+            val allNavItems = primaryNavItems + secondaryNavItems
+            GlassTopAppBar(
+                title = currentDestination.getCurrentTitle(allNavItems),
+                onNavigationClick = null
+            )
+            MainNavHost(
+                navController = navController,
+                modifier      = Modifier.weight(1f)
+            )
+        }
     }
 }
 
@@ -370,7 +497,13 @@ private fun ExpandedLayout(
             }
         },
     ) {
-        MainNavHost(navController = navController)
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            MainNavHost(
+                navController = navController,
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
 
@@ -453,4 +586,53 @@ private fun NavHostController.navigateToItem(item: NavItem) {
         launchSingleTop = true
         restoreState    = true
     }
+}
+
+// ─── Glass Top App Bar ────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GlassTopAppBar(
+    title: String,
+    onNavigationClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+        navigationIcon = {
+            if (onNavigationClick != null) {
+                IconButton(onClick = onNavigationClick) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+            scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+            )
+            .shadow(elevation = 2.dp, shape = RectangleShape, clip = false)
+    )
+}
+
+private fun NavDestination?.getCurrentTitle(allNavItems: List<NavItem>): String {
+    return allNavItems.find { item ->
+        this?.hierarchy?.any { dest -> dest.hasRoute(item.route::class) } == true
+    }?.label ?: "Hotel SaaS"
 }
