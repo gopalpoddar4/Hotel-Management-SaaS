@@ -88,11 +88,14 @@ import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
 import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.FrontOfficeScreen
+import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.GuestDetailsScreen
 import com.nexifotech.hotelsaas.feature.GuestManagementScreen
 import com.nexifotech.hotelsaas.feature.HouseKeepingScreen
+import androidx.navigation.toRoute
 import com.nexifotech.hotelsaas.feature.PayrollScreen
 import com.nexifotech.hotelsaas.feature.ReportsScreen
-import com.nexifotech.hotelsaas.feature.ReservationsScreen
+import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationScreen
+import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationDetailsScreen
 import com.nexifotech.hotelsaas.feature.RestaurantScreen
 import com.nexifotech.hotelsaas.feature.RoomManagementScreen
 import com.nexifotech.hotelsaas.feature.SettingsScreen
@@ -554,8 +557,34 @@ private fun MainNavHost(
         modifier         = modifier.fillMaxSize(),
     ) {
         composable<AppRoutes.Dashboard>         { DashboardScreen() }
-        composable<AppRoutes.FrontOffice>       { FrontOfficeScreen() }
-        composable<AppRoutes.Reservations>      { ReservationsScreen() }
+        composable<AppRoutes.FrontOffice>       { 
+            FrontOfficeScreen(
+                onNavigateToGuestDetails = { guestId ->
+                    navController.navigate(AppRoutes.GuestDetails(guestId))
+                }
+            ) 
+        }
+        composable<AppRoutes.GuestDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.GuestDetails>()
+            GuestDetailsScreen(
+                guestId = args.guestId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<AppRoutes.ReservationDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.ReservationDetails>()
+            ReservationDetailsScreen(
+                reservationId = args.reservationId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<AppRoutes.Reservations>      { 
+            ReservationScreen(
+                onNavigateToDetails = { id ->
+                    navController.navigate(AppRoutes.ReservationDetails(id))
+                }
+            ) 
+        }
         composable<AppRoutes.RoomManagement>    { RoomManagementScreen() }
         composable<AppRoutes.GuestManagement>   { GuestManagementScreen() }
         composable<AppRoutes.Billing>           { BillingScreen() }

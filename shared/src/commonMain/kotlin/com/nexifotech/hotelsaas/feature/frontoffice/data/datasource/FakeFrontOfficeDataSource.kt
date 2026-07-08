@@ -28,6 +28,11 @@ class FakeFrontOfficeDataSource : FrontOfficeDataSource {
         return mockGuests.toList()
     }
 
+    override suspend fun getGuestById(id: String): Guest? {
+        delay(300)
+        return mockGuests.find { it.id == id }
+    }
+
     override suspend fun searchGuests(query: String, filter: String): List<Guest> {
         delay(300)
         val lowerQuery = query.lowercase()

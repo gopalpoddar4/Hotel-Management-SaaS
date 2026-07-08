@@ -18,7 +18,13 @@ sealed class AppRoutes {
     data object FrontOffice : AppRoutes()
 
     @Serializable
+    data class GuestDetails(val guestId: String) : AppRoutes()
+
+    @Serializable
     data object Reservations : AppRoutes()
+
+    @Serializable
+    data class ReservationDetails(val reservationId: String) : AppRoutes()
 
     @Serializable
     data object RoomManagement : AppRoutes()

@@ -19,6 +19,7 @@ import com.nexifotech.hotelsaas.feature.frontoffice.presentation.viewmodel.Front
 
 @Composable
 fun FrontOfficeScreen(
+    onNavigateToGuestDetails: (String) -> Unit = {},
     viewModel: FrontOfficeViewModel = viewModel { FrontOfficeViewModel() }
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -76,7 +77,10 @@ fun FrontOfficeScreen(
                             )
                             GuestListSection(
                                 guests = uiState.filteredGuests,
-                                onGuestClicked = { viewModel.onEvent(FrontOfficeEvent.OnGuestClicked(it)) }
+                                onGuestClicked = { 
+                                    viewModel.onEvent(FrontOfficeEvent.OnGuestClicked(it))
+                                    onNavigateToGuestDetails(it.id)
+                                }
                             )
                         }
                         Column(
@@ -104,7 +108,10 @@ fun FrontOfficeScreen(
                         )
                         GuestListSection(
                             guests = uiState.filteredGuests,
-                            onGuestClicked = { viewModel.onEvent(FrontOfficeEvent.OnGuestClicked(it)) }
+                            onGuestClicked = { 
+                                viewModel.onEvent(FrontOfficeEvent.OnGuestClicked(it))
+                                onNavigateToGuestDetails(it.id)
+                            }
                         )
                     }
                 }

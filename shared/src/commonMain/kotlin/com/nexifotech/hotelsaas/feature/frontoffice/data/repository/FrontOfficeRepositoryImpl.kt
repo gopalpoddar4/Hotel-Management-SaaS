@@ -17,6 +17,10 @@ class FrontOfficeRepositoryImpl(
         return dataSource.getGuests()
     }
 
+    override suspend fun getGuestById(id: String): Guest? {
+        return dataSource.getGuestById(id)
+    }
+
     override suspend fun searchGuests(query: String, filter: String): List<Guest> {
         return dataSource.searchGuests(query, filter)
     }
