@@ -2,50 +2,90 @@ package com.nexifotech.hotelsaas.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/* ---------- Brand ---------- */
 
-// ─── Primary (Navy Blue) ──────────────────────────────────────────────────────
-val Navy10       = Color(0xFF001533)
-val Navy20       = Color(0xFF002966)
-val Navy30       = Color(0xFF003D99)
-val Navy40       = Color(0xFF0052CC)   // Primary base
-val Navy80       = Color(0xFF99C0FF)
-val Navy90       = Color(0xFFCCE0FF)
+val Primary = Color(0xFF2563EB)
+val PrimaryLight = Color(0xFF60A5FA)
+val PrimaryDark = Color(0xFF1D4ED8)
 
-// ─── Secondary (Warm Gold) ────────────────────────────────────────────────────
-val Gold10       = Color(0xFF2B1A00)
-val Gold20       = Color(0xFF563400)
-val Gold30       = Color(0xFF824E00)
-val Gold40       = Color(0xFFAD6900)   // Secondary base
-val Gold80       = Color(0xFFFFD180)
-val Gold90       = Color(0xFFFFE8B2)
+val Secondary = Color(0xFF7C3AED)
+val SecondaryLight = Color(0xFFA78BFA)
 
-// ─── Tertiary (Teal) ─────────────────────────────────────────────────────────
-val Teal10       = Color(0xFF001F1F)
-val Teal20       = Color(0xFF003D3D)
-val Teal30       = Color(0xFF005C5C)
-val Teal40       = Color(0xFF007A7A)   // Tertiary base
-val Teal80       = Color(0xFF80D6D6)
-val Teal90       = Color(0xFFB2EBEB)
+val Tertiary = Color(0xFF06B6D4)
 
-// ─── Neutral ──────────────────────────────────────────────────────────────────
-val Neutral10    = Color(0xFF1A1C20)
-val Neutral20    = Color(0xFF2F3035)
-val Neutral90    = Color(0xFFE4E4E9)
-val Neutral95    = Color(0xFFF2F2F5)
-val Neutral99    = Color(0xFFFCFCFF)
+/* ---------- Success ---------- */
 
-// ─── Error ────────────────────────────────────────────────────────────────────
-val Red10        = Color(0xFF400005)
-val Red40        = Color(0xFFBA1A1A)
-val Red80        = Color(0xFFFFB4AB)
-val Red90        = Color(0xFFFFDAD6)
+val Success = Color(0xFF16A34A)
+val SuccessContainer = Color(0xFFDCFCE7)
 
-// ─── Semantic Status Colors (Hotel domain) ────────────────────────────────────
-val StatusVacant        = Color(0xFF4CAF50)   // Green — room available
-val StatusOccupied      = Color(0xFFF44336)   // Red — room occupied
-val StatusMaintenance   = Color(0xFFFF9800)   // Orange — under maintenance
-val StatusReserved      = Color(0xFF2196F3)   // Blue — reserved
-val StatusCheckingIn    = Color(0xFF9C27B0)   // Purple — checking in
-val StatusCheckingOut   = Color(0xFF00BCD4)   // Cyan — checking out
-val StatusClean         = Color(0xFF8BC34A)   // Light green — clean & ready
-val StatusDirty         = Color(0xFFFF5722)   // Deep orange — needs cleaning
+/* ---------- Warning ---------- */
+
+val Warning = Color(0xFFF59E0B)
+val WarningContainer = Color(0xFFFEF3C7)
+
+/* ---------- Error ---------- */
+
+val Error = Color(0xFFDC2626)
+val ErrorContainer = Color(0xFFFEE2E2)
+
+/* ---------- Info ---------- */
+
+val Info = Color(0xFF0284C7)
+
+/* ---------- Light Theme ---------- */
+
+val BackgroundLight = Color(0xFFF8FAFC)
+val SurfaceLight = Color(0xFFFFFFFF)
+val SurfaceVariantLight = Color(0xFFF1F5F9)
+
+val CardLight = Color(0xFFFFFFFF)
+
+val BorderLight = Color(0xFFE2E8F0)
+
+val TextPrimaryLight = Color(0xFF0F172A)
+val TextSecondaryLight = Color(0xFF475569)
+val TextHintLight = Color(0xFF94A3B8)
+
+/* ---------- Dark Theme ---------- */
+
+val BackgroundDark = Color(0xFF09090B)
+val SurfaceDark = Color(0xFF18181B)
+val SurfaceVariantDark = Color(0xFF27272A)
+
+val CardDark = Color(0xFF1E293B)
+
+val BorderDark = Color(0xFF3F3F46)
+
+val TextPrimaryDark = Color(0xFFF8FAFC)
+val TextSecondaryDark = Color(0xFFCBD5E1)
+val TextHintDark = Color(0xFF94A3B8)
+
+/* ---------- Extras ---------- */
+
+val DividerLight = BorderLight
+val DividerDark = BorderDark
+
+val IconLight = TextSecondaryLight
+val IconDark = TextSecondaryDark
+
+val Shadow = Color(0x22000000)
+
+val Online = Color(0xFF22C55E)
+val Offline = Color(0xFFEF4444)
+
+
+val RevenueCard = Color(0xFF2563EB)
+val BookingCard = Color(0xFF7C3AED)
+val RoomCard = Color(0xFF06B6D4)
+val StaffCard = Color(0xFF16A34A)
+val ExpenseCard = Color(0xFFF59E0B)
+val GuestCard = Color(0xFFEC4899)
+
+val Available = Color(0xFF22C55E)
+val Occupied = Color(0xFFEF4444)
+val Reserved = Color(0xFFF59E0B)
+val Cleaning = Color(0xFF3B82F6)
+val Maintenance = Color(0xFF8B5CF6)
+
+val White = Color(0xFFFFFFFF)
+val Black = Color(0xFF000000)

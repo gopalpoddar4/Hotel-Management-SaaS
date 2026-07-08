@@ -10,13 +10,17 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
+
+    val isMac = System.getProperty("os.name").startsWith("Mac", ignoreCase = true)
+    if (isMac) {
+        listOf(
+            iosArm64(),
+            iosSimulatorArm64()
+        ).forEach { iosTarget ->
+            iosTarget.binaries.framework {
+                baseName = "Shared"
+                isStatic = true
+            }
         }
     }
     
@@ -68,6 +72,7 @@ kotlin {
 
             implementation(libs.bundles.ktor.common)
 
+            implementation(compose.materialIconsExtended)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -75,20 +80,15 @@ kotlin {
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
         }
-
         jvmMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
-
         wasmJsMain.dependencies {
             // ... baaki dependencies
             implementation(libs.ktor.client.js)     // Ktor Web/JS Engine
         }
     }
 }
-
-
-
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)

@@ -2,7 +2,6 @@ package com.nexifotech.hotelsaas.feature.dashboard.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,37 +19,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.nexifotech.hotelsaas.core.ui.theme.Navy10
-import com.nexifotech.hotelsaas.core.ui.theme.Navy30
-import com.nexifotech.hotelsaas.core.ui.theme.Navy90
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral10
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral20
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral90
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral99
-import com.nexifotech.hotelsaas.core.ui.theme.Red40
-import com.nexifotech.hotelsaas.core.ui.theme.Red90
-import com.nexifotech.hotelsaas.core.ui.theme.StatusDirty
-import com.nexifotech.hotelsaas.core.ui.theme.StatusMaintenance
-import com.nexifotech.hotelsaas.core.ui.theme.StatusVacant
+import com.nexifotech.hotelsaas.core.ui.theme.Available
+import com.nexifotech.hotelsaas.core.ui.theme.Occupied
+import com.nexifotech.hotelsaas.core.ui.theme.Reserved
 import com.nexifotech.hotelsaas.feature.dashboard.domain.model.RecentBooking
 
 @Composable
 fun StatusBadge(status: String) {
-    val isDark = isSystemInDarkTheme()
     val (bgColor, textColor) = when (status.uppercase()) {
-        "CHECKED_IN", "CONFIRMED" -> StatusVacant.copy(alpha = 0.2f) to StatusVacant
-        "PENDING" -> StatusMaintenance.copy(alpha = 0.2f) to StatusMaintenance
-        "CANCELLED" -> StatusDirty.copy(alpha = 0.2f) to StatusDirty
-        else -> (if (isDark) Neutral20 else Neutral90) to (if (isDark) Neutral90 else Neutral20)
+        "CHECKED_IN", "CONFIRMED" -> Available.copy(alpha = 0.1f) to Available
+        "PENDING" -> Reserved.copy(alpha = 0.1f) to Reserved
+        "CANCELLED" -> Occupied.copy(alpha = 0.1f) to Occupied
+        else -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
     }
     
     Box(
         modifier = Modifier
-            .background(bgColor, shape = RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .background(bgColor, shape = RoundedCornerShape(6.dp))
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = status,
@@ -66,65 +55,69 @@ fun RecentBookingsTable(
     bookings: List<RecentBooking>,
     modifier: Modifier = Modifier
 ) {
-    val isDark = isSystemInDarkTheme()
-    val cardBg = if (isDark) Neutral20 else Neutral99
-    val headerBg = if (isDark) Navy30 else Navy90
-    val headerText = if (isDark) Navy90 else Navy10
-    val rowText = if (isDark) Neutral90 else Neutral10
-    val dividerColor = if (isDark) Neutral20 else Neutral90
-
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = cardBg,
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    Column(
+        modifier = modifier.fillMaxWidth()
+            .padding(bottom = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
+        Text(
+            text = "Recent Activity",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         ) {
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(headerBg)
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .horizontalScroll(rememberScrollState())
             ) {
-                Text(
-                    text = "Recent Activity",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = headerText
-                )
-            }
-            
-            // Allow horizontal scrolling on smaller screens
-            Column(modifier = Modifier.horizontalScroll(rememberScrollState()).padding(16.dp)) {
+                // Header row
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Guest Name", modifier = Modifier.width(150.dp), fontWeight = FontWeight.Bold, color = rowText)
-                    Text("Room No", modifier = Modifier.width(100.dp), fontWeight = FontWeight.Bold, color = rowText)
-                    Text("Room Type", modifier = Modifier.width(120.dp), fontWeight = FontWeight.Bold, color = rowText)
-                    Text("Status", modifier = Modifier.width(120.dp), fontWeight = FontWeight.Bold, color = rowText)
+                    Text("GUEST NAME", modifier = Modifier.width(160.dp), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.Bold)
+                    Text("ROOM NO", modifier = Modifier.width(100.dp), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.Bold)
+                    Text("ROOM TYPE", modifier = Modifier.width(120.dp), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.Bold)
+                    Text("STATUS", modifier = Modifier.width(120.dp), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.Bold)
                 }
                 
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = dividerColor)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
                 
-                bookings.forEach { booking ->
+                // Content rows
+                bookings.forEachIndexed { index, booking ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp),
+                            .padding(horizontal = 24.dp, vertical = 20.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(booking.guestName, modifier = Modifier.width(150.dp), color = rowText)
-                        Text(booking.roomNo, modifier = Modifier.width(100.dp), color = rowText)
-                        Text(booking.roomType, modifier = Modifier.width(120.dp), color = rowText)
-                        Box(modifier = Modifier.width(120.dp)) {
+                        Text(booking.guestName, modifier = Modifier.width(160.dp), color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Medium)
+                        Text(booking.roomNo, modifier = Modifier.width(100.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(booking.roomType, modifier = Modifier.width(120.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Box(modifier = Modifier.width(120.dp), contentAlignment = Alignment.CenterStart) {
                             StatusBadge(booking.bookingStatus.name)
                         }
+                    }
+                    if (index < bookings.size - 1) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f), 
+                            thickness = 1.dp
+                        )
                     }
                 }
             }

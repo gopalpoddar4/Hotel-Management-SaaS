@@ -11,64 +11,95 @@ import androidx.compose.runtime.staticCompositionLocalOf
 
 // ─── Light Color Scheme ───────────────────────────────────────────────────────
 private val LightColorScheme = lightColorScheme(
-    primary             = Navy40,
-    onPrimary           = Neutral99,
-    primaryContainer    = Navy90,
-    onPrimaryContainer  = Navy10,
 
-    secondary           = Gold40,
-    onSecondary         = Neutral99,
-    secondaryContainer  = Gold90,
-    onSecondaryContainer = Gold10,
+    // Brand
+    primary = Primary,
+    onPrimary =  White,
 
-    tertiary            = Teal40,
-    onTertiary          = Neutral99,
-    tertiaryContainer   = Teal90,
-    onTertiaryContainer = Teal10,
+    primaryContainer = PrimaryLight,
+    onPrimaryContainer = TextPrimaryLight,
 
-    error               = Red40,
-    onError             = Neutral99,
-    errorContainer      = Red90,
-    onErrorContainer    = Red10,
+    secondary = Secondary,
+    onSecondary =  White,
 
-    background          = Neutral99,
-    onBackground        = Neutral10,
-    surface             = Neutral99,
-    onSurface           = Neutral10,
-    surfaceVariant      = Neutral95,
-    onSurfaceVariant    = Neutral20,
-    outline             = Neutral90
+    secondaryContainer = SecondaryLight,
+    onSecondaryContainer = TextPrimaryLight,
+
+    tertiary = Tertiary,
+    onTertiary =  White,
+
+    // Background
+    background = BackgroundLight,
+    onBackground = TextPrimaryLight,
+
+    // Cards & Sheets
+    surface = SurfaceLight,
+    onSurface = TextPrimaryLight,
+
+    surfaceVariant = SurfaceVariantLight,
+    onSurfaceVariant = TextSecondaryLight,
+
+    // Error
+    error = Error,
+    onError = White,
+    errorContainer = ErrorContainer,
+    onErrorContainer = Error,
+
+    // Outline
+    outline = BorderLight,
+
+    // Inverse
+    inverseSurface = SurfaceDark,
+    inverseOnSurface = TextPrimaryDark,
+
+    // Extra
+    surfaceTint = Primary,
 )
 
 // ─── Dark Color Scheme ────────────────────────────────────────────────────────
 private val DarkColorScheme = darkColorScheme(
-    primary             = Navy80,
-    onPrimary           = Navy20,
-    primaryContainer    = Navy30,
-    onPrimaryContainer  = Navy90,
 
-    secondary           = Gold80,
-    onSecondary         = Gold20,
-    secondaryContainer  = Gold30,
-    onSecondaryContainer = Gold90,
+    // Brand
+    primary = PrimaryLight,
+    onPrimary = Black,
 
-    tertiary            = Teal80,
-    onTertiary          = Teal20,
-    tertiaryContainer   = Teal30,
-    onTertiaryContainer = Teal90,
+    primaryContainer = PrimaryDark,
+    onPrimaryContainer = White,
 
-    error               = Red80,
-    onError             = Red10,
-    errorContainer      = Red40,
-    onErrorContainer    = Red90,
+    secondary = SecondaryLight,
+    onSecondary = Black,
 
-    background          = Neutral10,
-    onBackground        = Neutral90,
-    surface             = Neutral10,
-    onSurface           = Neutral90,
-    surfaceVariant      = Neutral20,
-    onSurfaceVariant    = Neutral90,
-    outline             = Neutral20
+    secondaryContainer = Secondary,
+    onSecondaryContainer = White,
+
+    tertiary = Tertiary,
+    onTertiary =  Black,
+
+    // Background
+    background = BackgroundDark,
+    onBackground = TextPrimaryDark,
+
+    // Cards
+    surface = SurfaceDark,
+    onSurface = TextPrimaryDark,
+
+    surfaceVariant = SurfaceVariantDark,
+    onSurfaceVariant = TextSecondaryDark,
+
+    // Error
+    error = Error,
+    onError = White,
+    errorContainer = Error,
+    onErrorContainer = White,
+
+    // Outline
+    outline = BorderDark,
+
+    // Inverse
+    inverseSurface = BackgroundLight,
+    inverseOnSurface = TextPrimaryLight,
+
+    surfaceTint = PrimaryLight,
 )
 
 // ─── Custom CompositionLocals ─────────────────────────────────────────────────

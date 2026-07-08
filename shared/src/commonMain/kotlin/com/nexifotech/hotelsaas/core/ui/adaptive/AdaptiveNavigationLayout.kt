@@ -1,6 +1,5 @@
 package com.nexifotech.hotelsaas.core.ui.adaptive
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +11,23 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.border
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
@@ -47,11 +64,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nexifotech.hotelsaas.core.navigation.AppRoutes
-import com.nexifotech.hotelsaas.core.ui.theme.Navy10
-import com.nexifotech.hotelsaas.core.ui.theme.Navy30
-import com.nexifotech.hotelsaas.core.ui.theme.Navy90
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral20
-import com.nexifotech.hotelsaas.core.ui.theme.Neutral90
 import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
@@ -85,28 +97,28 @@ import org.jetbrains.compose.resources.painterResource
 private data class NavItem(
     val route: AppRoutes,
     val label: String,
-    val emoji: DrawableResource,
+    val emoji: ImageVector,
 )
 
 // ─── Destination Definitions ──────────────────────────────────────────────────
 private val primaryNavItems: List<NavItem> = listOf(
-    NavItem(AppRoutes.Dashboard,       "Dashboard", Res.drawable.dashboard),
-    NavItem(AppRoutes.FrontOffice,     "Front Office", Res.drawable.frontoffice),
-    NavItem(AppRoutes.Reservations,    "Reservations", Res.drawable.reservation),
-    NavItem(AppRoutes.RoomManagement,  "Rooms",        Res.drawable.rooms),
-    NavItem(AppRoutes.GuestManagement, "Guests",       Res.drawable.guests),
-    NavItem(AppRoutes.Billing,         "Billing",      Res.drawable.billing),
-    NavItem(AppRoutes.Housekeeping,    "Housekeeping", Res.drawable.housekeeping),
-    NavItem(AppRoutes.Restaurant,      "Restaurant",   Res.drawable.resturnt),
+    NavItem(AppRoutes.Dashboard,       "Dashboard", Icons.Default.Dashboard),
+    NavItem(AppRoutes.FrontOffice,     "Front Office", Icons.Default.AccountBox),
+    NavItem(AppRoutes.Reservations,    "Reservations", Icons.Default.DateRange),
+    NavItem(AppRoutes.RoomManagement,  "Rooms",        Icons.Default.Menu),
+    NavItem(AppRoutes.GuestManagement, "Guests",       Icons.Default.Person),
+    NavItem(AppRoutes.Billing,         "Billing",      Icons.Default.ShoppingCart),
+    NavItem(AppRoutes.Housekeeping,    "Housekeeping", Icons.Default.Build),
+    NavItem(AppRoutes.Restaurant,      "Restaurant",   Icons.Default.Warning),
 )
 
 private val secondaryNavItems: List<NavItem> = listOf(
-    NavItem(AppRoutes.Reports,           "Reports",  Res.drawable.reports),
-    NavItem(AppRoutes.Settings,          "Settings", Res.drawable.setting),
-    NavItem(AppRoutes.Payroll,           "Payroll",  Res.drawable.billing),
-    NavItem(AppRoutes.Expenses,          "Expenses", Res.drawable.billing),
-    NavItem(AppRoutes.UserManagement,    "Users",    Res.drawable.guests),
-    NavItem(AppRoutes.BackupAndSecurity, "Backup",   Res.drawable.frontoffice),
+    NavItem(AppRoutes.Reports,           "Reports",  Icons.AutoMirrored.Filled.List),
+    NavItem(AppRoutes.Payroll,           "Payroll",  Icons.Default.CheckCircle),
+    NavItem(AppRoutes.Expenses,          "Expenses", Icons.Default.Place),
+    NavItem(AppRoutes.UserManagement,    "Users",    Icons.Default.AccountCircle),
+    NavItem(AppRoutes.BackupAndSecurity, "Backup",   Icons.Default.Refresh),
+    NavItem(AppRoutes.Settings,          "Settings", Icons.Default.Settings)
 )
 
 /** First 4 primary items shown in the compact bottom navigation bar. */
@@ -124,7 +136,7 @@ private fun NavIcon(item: NavItem) {
         modifier         = Modifier.size(24.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(painterResource(item.emoji),"", modifier = Modifier.size(20.dp))
+        Icon(imageVector = item.emoji,"", modifier = Modifier.size(20.dp))
     }
 }
 
@@ -158,16 +170,20 @@ private fun CompactLayout(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                drawerContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                drawerTonalElevation = 0.dp,
+                modifier = Modifier.border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
+                )
+            ) {
                 DrawerHeader()
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(5.dp))
                 LazyColumn {
                     item {
                         allNavItems.forEach { item ->
-                            val isDark = isSystemInDarkTheme()
-                            val activeBg = if (isDark) Navy30 else Navy90
-                            val activeText = if (isDark) Navy90 else Navy10
-                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
@@ -177,13 +193,13 @@ private fun CompactLayout(
                                     navController.navigateToItem(item)
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
-                                shape = CircleShape,
+                                shape = RoundedCornerShape(12.dp),
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = activeBg,
-                                    selectedIconColor = activeText,
-                                    selectedTextColor = activeText,
-                                    unselectedIconColor = inactiveText,
-                                    unselectedTextColor = inactiveText
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                         }
@@ -231,27 +247,29 @@ private fun MediumLayout(
     currentDestination: NavDestination?,
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
-        NavigationRail {
+        NavigationRail(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+            modifier = Modifier.border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+            )
+        ) {
             LazyColumn {
                 item {
                     Spacer(Modifier.height(16.dp))
                     // Primary destinations at the top of the rail
                     primaryNavItems.forEach { item ->
-                        val isDark = isSystemInDarkTheme()
-                        val activeBg = if (isDark) Navy30 else Navy90
-                        val activeText = if (isDark) Navy90 else Navy10
-                        val inactiveText = if (isDark) Neutral90 else Neutral20
                         NavigationRailItem(
                             icon     = { NavIcon(item) },
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
                             colors = NavigationRailItemDefaults.colors(
-                                selectedIconColor = activeText,
-                                selectedTextColor = activeText,
-                                indicatorColor = activeBg,
-                                unselectedIconColor = inactiveText,
-                                unselectedTextColor = inactiveText
+                                selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                     }
@@ -259,21 +277,17 @@ private fun MediumLayout(
                     HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
                     // Secondary destinations at the bottom of the rail
                     secondaryNavItems.forEach { item ->
-                        val isDark = isSystemInDarkTheme()
-                        val activeBg = if (isDark) Navy30 else Navy90
-                        val activeText = if (isDark) Navy90 else Navy10
-                        val inactiveText = if (isDark) Neutral90 else Neutral20
                         NavigationRailItem(
                             icon     = { NavIcon(item) },
                             label    = { Text(item.label) },
                             selected = currentDestination.isRouteSelected(item),
                             onClick  = { navController.navigateToItem(item) },
                             colors = NavigationRailItemDefaults.colors(
-                                selectedIconColor = activeText,
-                                selectedTextColor = activeText,
-                                indicatorColor = activeBg,
-                                unselectedIconColor = inactiveText,
-                                unselectedTextColor = inactiveText
+                                selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.secondaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                     }
@@ -298,30 +312,34 @@ private fun ExpandedLayout(
 ) {
     PermanentNavigationDrawer(
         drawerContent = {
-            PermanentDrawerSheet(modifier = Modifier.width(240.dp)) {
+            PermanentDrawerSheet(
+                drawerContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                modifier = Modifier
+                    .width(240.dp)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                    )
+            ) {
                 DrawerHeader()
                 Spacer(Modifier.height(8.dp))
                 LazyColumn {
                     item {
                         SectionLabel("Operations")
                         primaryNavItems.forEach { item ->
-                            val isDark = isSystemInDarkTheme()
-                            val activeBg = if (isDark) Navy30 else Navy90
-                            val activeText = if (isDark) Navy90 else Navy10
-                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
                                 selected = currentDestination.isRouteSelected(item),
                                 onClick  = { navController.navigateToItem(item) },
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
-                                shape = CircleShape,
+                                shape = RoundedCornerShape(12.dp),
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = activeBg,
-                                    selectedIconColor = activeText,
-                                    selectedTextColor = activeText,
-                                    unselectedIconColor = inactiveText,
-                                    unselectedTextColor = inactiveText
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                         }
@@ -330,23 +348,19 @@ private fun ExpandedLayout(
                         )
                         SectionLabel("Management")
                         secondaryNavItems.forEach { item ->
-                            val isDark = isSystemInDarkTheme()
-                            val activeBg = if (isDark) Navy30 else Navy90
-                            val activeText = if (isDark) Navy90 else Navy10
-                            val inactiveText = if (isDark) Neutral90 else Neutral20
                             NavigationDrawerItem(
                                 icon     = { NavIcon(item) },
                                 label    = { Text(item.label) },
                                 selected = currentDestination.isRouteSelected(item),
                                 onClick  = { navController.navigateToItem(item) },
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 2.dp),
-                                shape = CircleShape,
+                                shape = RoundedCornerShape(12.dp),
                                 colors = NavigationDrawerItemDefaults.colors(
-                                    selectedContainerColor = activeBg,
-                                    selectedIconColor = activeText,
-                                    selectedTextColor = activeText,
-                                    unselectedIconColor = inactiveText,
-                                    unselectedTextColor = inactiveText
+                                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    selectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             )
                         }
