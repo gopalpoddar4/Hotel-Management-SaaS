@@ -92,8 +92,8 @@ import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.BillingScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
 import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.FrontOfficeScreen
-import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.GuestDetailsScreen
-import com.nexifotech.hotelsaas.feature.GuestManagementScreen
+import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestDetailsScreen
+import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestsScreen
 import com.nexifotech.hotelsaas.feature.HouseKeepingScreen
 import androidx.navigation.toRoute
 import com.nexifotech.hotelsaas.feature.PayrollScreen
@@ -604,7 +604,13 @@ private fun MainNavHost(
                 onBack = { navController.popBackStack() }
             )
         }
-        composable<AppRoutes.GuestManagement>   { GuestManagementScreen() }
+        composable<AppRoutes.GuestManagement>   { 
+            GuestsScreen(
+                onNavigateToDetails = { guestId ->
+                    navController.navigate(AppRoutes.GuestDetails(guestId))
+                }
+            ) 
+        }
         composable<AppRoutes.Billing>           { BillingScreen() }
         composable<AppRoutes.Housekeeping>      { HouseKeepingScreen() }
         composable<AppRoutes.Restaurant>        { RestaurantScreen() }
