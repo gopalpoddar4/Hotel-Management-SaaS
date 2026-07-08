@@ -34,10 +34,14 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.Room
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
@@ -97,8 +101,8 @@ import com.nexifotech.hotelsaas.feature.ReportsScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationDetailsScreen
 import com.nexifotech.hotelsaas.feature.RestaurantScreen
-import com.nexifotech.hotelsaas.feature.RoomManagementScreen
 import com.nexifotech.hotelsaas.feature.SettingsScreen
+import com.nexifotech.hotelsaas.feature.rooms.presentation.screen.RoomDetailsScreen
 import com.nexifotech.hotelsaas.feature.UserManagementScreen
 import com.nexifotech.hotelsaas.feature.dashboard.presentation.DashboardScreen
 import hotelsaas.shared.generated.resources.Res
@@ -116,6 +120,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import com.nexifotech.hotelsaas.feature.rooms.presentation.screen.RoomsScreen
 
 // ─── Nav Item Model ───────────────────────────────────────────────────────────
 private data class NavItem(
@@ -129,11 +134,11 @@ private val primaryNavItems: List<NavItem> = listOf(
     NavItem(AppRoutes.Dashboard,       "Dashboard", Icons.Default.Dashboard),
     NavItem(AppRoutes.FrontOffice,     "Front Office", Icons.Default.AccountBox),
     NavItem(AppRoutes.Reservations,    "Reservations", Icons.Default.DateRange),
-    NavItem(AppRoutes.RoomManagement,  "Rooms",        Icons.Default.Menu),
+    NavItem(AppRoutes.RoomManagement,  "Rooms",        Icons.Default.Home),
     NavItem(AppRoutes.GuestManagement, "Guests",       Icons.Default.Person),
-    NavItem(AppRoutes.Billing,         "Billing",      Icons.Default.ShoppingCart),
+    NavItem(AppRoutes.Billing,         "Billing",      Icons.Default.Money),
     NavItem(AppRoutes.Housekeeping,    "Housekeeping", Icons.Default.Build),
-    NavItem(AppRoutes.Restaurant,      "Restaurant",   Icons.Default.Warning),
+    NavItem(AppRoutes.Restaurant,      "Restaurant",   Icons.Default.Restaurant),
 )
 
 private val secondaryNavItems: List<NavItem> = listOf(
@@ -585,7 +590,20 @@ private fun MainNavHost(
                 }
             ) 
         }
-        composable<AppRoutes.RoomManagement>    { RoomManagementScreen() }
+        composable<AppRoutes.RoomManagement> { 
+            RoomsScreen(
+                onNavigateToDetails = { roomId ->
+                    navController.navigate(AppRoutes.RoomDetails(roomId))
+                }
+            ) 
+        }
+        composable<AppRoutes.RoomDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.RoomDetails>()
+            RoomDetailsScreen(
+                roomId = args.roomId,
+                onBack = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.GuestManagement>   { GuestManagementScreen() }
         composable<AppRoutes.Billing>           { BillingScreen() }
         composable<AppRoutes.Housekeeping>      { HouseKeepingScreen() }

@@ -30,6 +30,9 @@ sealed class AppRoutes {
     data object RoomManagement : AppRoutes()
 
     @Serializable
+    data class RoomDetails(val roomId: String) : AppRoutes()
+
+    @Serializable
     data object GuestManagement : AppRoutes()
 
     @Serializable

@@ -99,7 +99,11 @@ fun ReservationDetailsScreen(
                                         verticalArrangement = Arrangement.spacedBy(24.dp)
                                     ) {
                                         ReservationPaymentDetails(reservation)
-                                        ReservationDetailsActions(reservation, viewModel)
+                                        ReservationDetailsActions(
+                                            reservation = reservation,
+                                            onEditClicked = { viewModel.onEvent(ReservationDetailsEvent.OnEditClicked(it)) },
+                                            onCancelClicked = { viewModel.onEvent(ReservationDetailsEvent.OnCancelReservationClicked(it)) }
+                                        )
                                     }
                                 }
                             }
@@ -107,7 +111,13 @@ fun ReservationDetailsScreen(
                             item { ReservationHeaderInfo(reservation) }
                             item { ReservationBookingDetails(reservation) }
                             item { ReservationPaymentDetails(reservation) }
-                            item { ReservationDetailsActions(reservation, viewModel) }
+                            item { 
+                                ReservationDetailsActions(
+                                    reservation = reservation,
+                                    onEditClicked = { viewModel.onEvent(ReservationDetailsEvent.OnEditClicked(it)) },
+                                    onCancelClicked = { viewModel.onEvent(ReservationDetailsEvent.OnCancelReservationClicked(it)) }
+                                ) 
+                            }
                         }
 
                         item { Spacer(modifier = Modifier.height(24.dp)) }
@@ -118,172 +128,3 @@ fun ReservationDetailsScreen(
     }
 }
 
-@Composable
-private fun ReservationHeaderInfo(reservation: Reservation) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Guest Information",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Name", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.guestName, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Phone", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.phoneNumber, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Email", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.email, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Status", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Spacer(Modifier.height(4.dp))
-                        ReservationStatusChip(status = reservation.bookingStatus)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ReservationBookingDetails(reservation: Reservation) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Booking Details",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Room Type", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.roomType, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Room Number", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.roomNumber, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Check-in", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.checkInDate, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    Column {
-                        Text(text = "Check-out", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = reservation.checkOutDate, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
-            Column {
-                Text(text = "Special Requests", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(text = reservation.specialRequests, style = MaterialTheme.typography.bodyLarge)
-            }
-        }
-    }
-}
-
-@Composable
-private fun ReservationPaymentDetails(reservation: Reservation) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Payment Information",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Total Amount", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(text = "\$${reservation.totalAmount}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-            }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Payment Status", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                ReservationStatusChip(status = reservation.paymentStatus)
-            }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Booking Source", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(text = reservation.bookingSource, style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-    }
-}
-
-@Composable
-private fun ReservationDetailsActions(reservation: Reservation, viewModel: ReservationDetailsViewModel) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "Actions",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Button(
-                onClick = { viewModel.onEvent(ReservationDetailsEvent.OnEditClicked(reservation.id)) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Edit Reservation")
-            }
-            Button(
-                onClick = { viewModel.onEvent(ReservationDetailsEvent.OnCancelReservationClicked(reservation.id)) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text("Cancel Reservation")
-            }
-        }
-    }
-}
