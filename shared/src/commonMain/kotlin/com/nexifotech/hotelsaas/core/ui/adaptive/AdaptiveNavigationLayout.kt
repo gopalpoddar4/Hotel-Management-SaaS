@@ -89,7 +89,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nexifotech.hotelsaas.core.navigation.AppRoutes
 import com.nexifotech.hotelsaas.feature.BackupScreen
-import com.nexifotech.hotelsaas.feature.BillingScreen
+import com.nexifotech.hotelsaas.feature.billing.presentation.screen.BillingScreen
+import com.nexifotech.hotelsaas.feature.billing.presentation.screen.BillingDetailsScreen
 import com.nexifotech.hotelsaas.feature.ExpenseScreen
 import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.FrontOfficeScreen
 import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestDetailsScreen
@@ -611,7 +612,20 @@ private fun MainNavHost(
                 }
             ) 
         }
-        composable<AppRoutes.Billing>           { BillingScreen() }
+        composable<AppRoutes.Billing>           { 
+            BillingScreen(
+                onNavigateToDetails = { invoiceId ->
+                    navController.navigate(AppRoutes.BillingDetails(invoiceId))
+                }
+            ) 
+        }
+        composable<AppRoutes.BillingDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.BillingDetails>()
+            BillingDetailsScreen(
+                invoiceId = args.invoiceId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.Housekeeping>      { HouseKeepingScreen() }
         composable<AppRoutes.Restaurant>        { RestaurantScreen() }
         composable<AppRoutes.Reports>           { ReportsScreen() }
