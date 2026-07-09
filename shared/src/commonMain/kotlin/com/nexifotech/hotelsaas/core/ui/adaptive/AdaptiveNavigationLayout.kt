@@ -102,7 +102,7 @@ import com.nexifotech.hotelsaas.feature.PayrollScreen
 import com.nexifotech.hotelsaas.feature.ReportsScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationDetailsScreen
-import com.nexifotech.hotelsaas.feature.RestaurantScreen
+
 import com.nexifotech.hotelsaas.feature.SettingsScreen
 import com.nexifotech.hotelsaas.feature.rooms.presentation.screen.RoomDetailsScreen
 import com.nexifotech.hotelsaas.feature.UserManagementScreen
@@ -115,7 +115,8 @@ import hotelsaas.shared.generated.resources.guests
 import hotelsaas.shared.generated.resources.housekeeping
 import hotelsaas.shared.generated.resources.reports
 import hotelsaas.shared.generated.resources.reservation
-import hotelsaas.shared.generated.resources.resturnt
+import com.nexifotech.hotelsaas.feature.restaurant.presentation.screen.RestaurantScreen
+import com.nexifotech.hotelsaas.feature.restaurant.presentation.screen.RestaurantOrderDetailsScreen
 import hotelsaas.shared.generated.resources.rooms
 import hotelsaas.shared.generated.resources.setting
 import kotlinx.coroutines.launch
@@ -641,7 +642,20 @@ private fun MainNavHost(
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<AppRoutes.Restaurant>        { RestaurantScreen() }
+        composable<AppRoutes.Restaurant>        { 
+            RestaurantScreen(
+                onNavigateToOrderDetails = { orderId ->
+                    navController.navigate(AppRoutes.RestaurantDetails(orderId))
+                }
+            )
+        }
+        composable<AppRoutes.RestaurantDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.RestaurantDetails>()
+            RestaurantOrderDetailsScreen(
+                orderId = args.orderId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.Reports>           { ReportsScreen() }
         composable<AppRoutes.Settings>          { SettingsScreen() }
         composable<AppRoutes.Payroll>           { PayrollScreen() }
