@@ -45,6 +45,9 @@ sealed interface AppRoutes {
     data object Housekeeping : AppRoutes
 
     @Serializable
+    data class HousekeepingDetails(val taskId: String) : AppRoutes
+
+    @Serializable
     data object Restaurant : AppRoutes
 
     @Serializable
