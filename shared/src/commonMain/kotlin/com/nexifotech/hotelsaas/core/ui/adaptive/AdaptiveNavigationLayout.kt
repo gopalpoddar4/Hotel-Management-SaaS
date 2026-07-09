@@ -99,7 +99,8 @@ import com.nexifotech.hotelsaas.feature.housekeeping.presentation.screen.Houseke
 import com.nexifotech.hotelsaas.feature.housekeeping.presentation.screen.HousekeepingDetailsScreen
 import androidx.navigation.toRoute
 import com.nexifotech.hotelsaas.feature.PayrollScreen
-import com.nexifotech.hotelsaas.feature.ReportsScreen
+import com.nexifotech.hotelsaas.feature.reports.presentation.screen.ReportsScreen
+import com.nexifotech.hotelsaas.feature.reports.presentation.screen.ReportDetailsScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationDetailsScreen
 
@@ -656,7 +657,20 @@ private fun MainNavHost(
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<AppRoutes.Reports>           { ReportsScreen() }
+        composable<AppRoutes.Reports>           { 
+            ReportsScreen(
+                onNavigateToReportDetails = { reportId ->
+                    navController.navigate(AppRoutes.ReportDetails(reportId))
+                }
+            )
+        }
+        composable<AppRoutes.ReportDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.ReportDetails>()
+            ReportDetailsScreen(
+                reportId = args.reportId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.Settings>          { SettingsScreen() }
         composable<AppRoutes.Payroll>           { PayrollScreen() }
         composable<AppRoutes.Expenses>          { ExpenseScreen() }

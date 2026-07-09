@@ -57,6 +57,9 @@ sealed interface AppRoutes {
     data object Reports : AppRoutes
 
     @Serializable
+    data class ReportDetails(val reportId: String) : AppRoutes
+
+    @Serializable
     data object Settings : AppRoutes
 
     @Serializable
