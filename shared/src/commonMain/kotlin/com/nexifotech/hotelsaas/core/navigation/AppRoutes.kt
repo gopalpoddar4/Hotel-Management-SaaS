@@ -85,4 +85,7 @@ sealed interface AppRoutes {
 
     @Serializable
     data object BackupAndSecurity : AppRoutes
+
+    @Serializable
+    data class BackupDetails(val backupId: String) : AppRoutes
 }
