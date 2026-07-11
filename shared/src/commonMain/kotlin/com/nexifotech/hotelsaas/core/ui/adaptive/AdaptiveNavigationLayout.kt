@@ -98,7 +98,9 @@ import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestsScreen
 import com.nexifotech.hotelsaas.feature.housekeeping.presentation.screen.HousekeepingScreen
 import com.nexifotech.hotelsaas.feature.housekeeping.presentation.screen.HousekeepingDetailsScreen
 import androidx.navigation.toRoute
-import com.nexifotech.hotelsaas.feature.PayrollScreen
+import com.nexifotech.hotelsaas.feature.payroll.presentation.screen.PayrollScreen
+import com.nexifotech.hotelsaas.feature.payroll.presentation.screen.PayrollDetailsScreen
+import com.nexifotech.hotelsaas.feature.payroll.presentation.screen.PayslipScreen
 import com.nexifotech.hotelsaas.feature.reports.presentation.screen.ReportsScreen
 import com.nexifotech.hotelsaas.feature.reports.presentation.screen.ReportDetailsScreen
 import com.nexifotech.hotelsaas.feature.reservation.presentation.screen.ReservationScreen
@@ -672,7 +674,33 @@ private fun MainNavHost(
             )
         }
         composable<AppRoutes.Settings>          { SettingsScreen() }
-        composable<AppRoutes.Payroll>           { PayrollScreen() }
+        composable<AppRoutes.Payroll>           { 
+            PayrollScreen(
+                onNavigateToDetails = { id ->
+                    navController.navigate(AppRoutes.PayrollDetails(id))
+                },
+                onNavigateToPayslip = { id ->
+                    navController.navigate(AppRoutes.Payslip(id))
+                }
+            ) 
+        }
+        composable<AppRoutes.PayrollDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.PayrollDetails>()
+            PayrollDetailsScreen(
+                payrollId = args.payrollId,
+                onBackClick = { navController.popBackStack() },
+                onNavigateToPayslip = { id ->
+                    navController.navigate(AppRoutes.Payslip(id))
+                }
+            )
+        }
+        composable<AppRoutes.Payslip> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.Payslip>()
+            PayslipScreen(
+                payrollId = args.payrollId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.Expenses>          { ExpenseScreen() }
         composable<AppRoutes.UserManagement>    { UserManagementScreen() }
         composable<AppRoutes.BackupAndSecurity> { BackupScreen() }

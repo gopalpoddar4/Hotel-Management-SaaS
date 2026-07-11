@@ -66,6 +66,12 @@ sealed interface AppRoutes {
     data object Payroll : AppRoutes
 
     @Serializable
+    data class PayrollDetails(val payrollId: String) : AppRoutes
+
+    @Serializable
+    data class Payslip(val payrollId: String) : AppRoutes
+
+    @Serializable
     data object Expenses : AppRoutes
 
     @Serializable
