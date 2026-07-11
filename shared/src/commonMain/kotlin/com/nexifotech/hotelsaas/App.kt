@@ -3,6 +3,7 @@ package com.nexifotech.hotelsaas
 import androidx.compose.runtime.Composable
 import com.nexifotech.hotelsaas.core.di.coreModule
 import com.nexifotech.hotelsaas.core.navigation.AppNavGraph
+import com.nexifotech.hotelsaas.feature.auth.di.authModule
 import com.nexifotech.hotelsaas.core.ui.theme.HotelSaasTheme
 import org.koin.compose.KoinApplication
 
@@ -20,7 +21,7 @@ import org.koin.compose.KoinApplication
 @Composable
 fun App() {
     KoinApplication(application = {
-        modules(coreModule)
+        modules(coreModule, authModule)
     }) {
         HotelSaasTheme {
             AppNavGraph()

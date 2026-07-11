@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nexifotech.hotelsaas.core.ui.adaptive.AdaptiveNavigationLayout
-import com.nexifotech.hotelsaas.feature.AuthScreen
+import com.nexifotech.hotelsaas.feature.auth.presentation.screen.LoginScreen
 import org.koin.compose.koinInject
 
 /**
@@ -60,15 +60,7 @@ fun AppNavGraph(
         startDestination = AppRoutes.Auth,
     ) {
         composable<AppRoutes.Auth> {
-            // Automatically navigate to Main while authentication is not yet implemented.
-            // Replace this LaunchedEffect with a real auth-state check (e.g. from a ViewModel)
-            // when business logic is introduced.
-            LaunchedEffect(Unit) {
-                navController.navigate(AppRoutes.Main) {
-                    popUpTo<AppRoutes.Auth> { inclusive = true }
-                }
-            }
-            AuthScreen()
+            LoginScreen()
         }
 
         composable<AppRoutes.Main> {
