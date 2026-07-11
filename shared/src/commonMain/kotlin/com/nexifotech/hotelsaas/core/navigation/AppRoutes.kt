@@ -75,6 +75,9 @@ sealed interface AppRoutes {
     data object Expenses : AppRoutes
 
     @Serializable
+    data class ExpenseDetails(val expenseId: String) : AppRoutes
+
+    @Serializable
     data object UserManagement : AppRoutes
 
     @Serializable

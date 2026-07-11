@@ -91,7 +91,8 @@ import com.nexifotech.hotelsaas.core.navigation.AppRoutes
 import com.nexifotech.hotelsaas.feature.BackupScreen
 import com.nexifotech.hotelsaas.feature.billing.presentation.screen.BillingScreen
 import com.nexifotech.hotelsaas.feature.billing.presentation.screen.BillingDetailsScreen
-import com.nexifotech.hotelsaas.feature.ExpenseScreen
+import com.nexifotech.hotelsaas.feature.expenses.presentation.screen.ExpensesScreen
+import com.nexifotech.hotelsaas.feature.expenses.presentation.screen.ExpenseDetailsScreen
 import com.nexifotech.hotelsaas.feature.frontoffice.presentation.screen.FrontOfficeScreen
 import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestDetailsScreen
 import com.nexifotech.hotelsaas.feature.guests.presentation.screen.GuestsScreen
@@ -701,7 +702,20 @@ private fun MainNavHost(
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<AppRoutes.Expenses>          { ExpenseScreen() }
+        composable<AppRoutes.Expenses> { 
+            ExpensesScreen(
+                onNavigateToDetails = { id ->
+                    navController.navigate(AppRoutes.ExpenseDetails(id))
+                }
+            ) 
+        }
+        composable<AppRoutes.ExpenseDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<AppRoutes.ExpenseDetails>()
+            ExpenseDetailsScreen(
+                expenseId = args.expenseId,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
         composable<AppRoutes.UserManagement>    { UserManagementScreen() }
         composable<AppRoutes.BackupAndSecurity> { BackupScreen() }
     }
