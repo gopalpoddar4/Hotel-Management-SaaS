@@ -81,5 +81,8 @@ sealed interface AppRoutes {
     data object UserManagement : AppRoutes
 
     @Serializable
+    data class UserDetails(val userId: String) : AppRoutes
+
+    @Serializable
     data object BackupAndSecurity : AppRoutes
 }
